@@ -16,6 +16,8 @@ using System.Net.Security;
 using Newtonsoft.Json;
 using System.Timers;
 using System.Net;
+using System.Net.Mail;
+
 
 
 namespace SFTPService
@@ -276,8 +278,11 @@ namespace SFTPService
                                 uploaded = false;
                                 logcontent = destFileName + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
                             }
-
+                            string sub = "Avanze Direct2Title Transfer Desk - " + destFileName + " - Transfer Status Failed";
+                            string msg = logcontent;
+                            
                             WriteLog(logcontent);
+                            SendEmail(sub, msg);
                         });
 
                         jsonStringTask2.Wait();
@@ -285,7 +290,11 @@ namespace SFTPService
                     else
                     {
                         uploaded = false;
-                        WriteLog(destFileName + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss"));
+                        string logcont = destFileName + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                        WriteLog(logcont);
+                        string sub = "Avanze Direct2Title Transfer Desk - " + destFileName + " - Transfer Status Failed";
+                        string msg = logcont;
+                        SendEmail(sub, msg);
                     }
 
                     fileStream.Dispose();
@@ -373,5 +382,73 @@ namespace SFTPService
             File.Delete(file);
             return 1;
         }
+
+        #region Send Email Code Function  
+        /// <summary>  
+        /// Send Email with cc bcc with given subject and message.  
+        /// </summary>  
+        /// <param name="ToEmail"></param>  
+        /// <param name="cc"></param>  
+        /// <param name="bcc"></param>  
+        /// <param name="Subj"></param>  
+        /// <param name="Message"></param>  
+        public static void SendEmail(String Subj, string Message)
+        {
+            //Reading sender Email credential from web.config file  
+
+            string HostAdd = ConfigurationManager.AppSettings["Host"].ToString();
+            int Port = Convert.ToInt32( ConfigurationManager.AppSettings["Port"].ToString() );
+
+            string FromEmailid = ConfigurationManager.AppSettings["FromMail"].ToString();
+            string Pass = ConfigurationManager.AppSettings["Password"].ToString();
+
+            string ToEmailid = ConfigurationManager.AppSettings["ToMail"].ToString();
+            string CCMail = ConfigurationManager.AppSettings["CCMail"].ToString();
+            string BCCMail = ConfigurationManager.AppSettings["BCCMail"].ToString();
+
+
+            //creating the object of MailMessage  
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(FromEmailid); //From Email Id  
+            mailMessage.Subject = Subj; //Subject of Email  
+            mailMessage.Body = Message; //body or message of Email  
+            mailMessage.IsBodyHtml = true;
+
+            string[] ToMuliId = ToEmailid.Split(',');
+            foreach (string ToEMailId in ToMuliId)
+            {
+                mailMessage.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id  
+            }
+
+
+            string[] CCId = CCMail.Split(',');
+
+            foreach (string CCEmail in CCId)
+            {
+                mailMessage.CC.Add(new MailAddress(CCEmail)); //Adding Multiple CC email Id  
+            }
+
+            string[] bccid = BCCMail.Split(',');
+
+            foreach (string bccEmailId in bccid)
+            {
+                mailMessage.Bcc.Add(new MailAddress(bccEmailId)); //Adding Multiple BCC email Id  
+            }
+            SmtpClient smtp = new SmtpClient();  // creating object of smptpclient  
+            smtp.Host = HostAdd;              //host of emailaddress for example smtp.gmail.com etc  
+
+            //network and security related credentials  
+
+            smtp.EnableSsl = false;
+            NetworkCredential NetworkCred = new NetworkCredential();
+            NetworkCred.UserName = mailMessage.From.Address;
+            NetworkCred.Password = Pass;
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = Port;
+            smtp.Send(mailMessage); //sending Email  
+        }
+
+        #endregion
     }
 }

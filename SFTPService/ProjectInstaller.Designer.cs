@@ -39,7 +39,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "D2T File Transfer Service";
+            this.serviceInstaller1.ServiceName = "Avanze Direct2Title Transfer Desk";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
