@@ -282,7 +282,10 @@ namespace SFTPService
                             string msg = logcontent;
                             
                             WriteLog(logcontent);
-                            SendEmail(sub, msg);
+                            if(jsonString != "Success")
+                            {
+                                SendEmail(sub, msg);
+                            }
                         });
 
                         jsonStringTask2.Wait();
@@ -425,21 +428,27 @@ namespace SFTPService
 
             foreach (string CCEmail in CCId)
             {
-                mailMessage.CC.Add(new MailAddress(CCEmail)); //Adding Multiple CC email Id  
+                if (CCEmail != "")
+                {
+                   mailMessage.CC.Add(new MailAddress(CCEmail)); //Adding Multiple CC email Id  
+                }
             }
 
             string[] bccid = BCCMail.Split(',');
 
             foreach (string bccEmailId in bccid)
             {
-                mailMessage.Bcc.Add(new MailAddress(bccEmailId)); //Adding Multiple BCC email Id  
+                if(bccEmailId != "")
+                {
+                    mailMessage.Bcc.Add(new MailAddress(bccEmailId)); //Adding Multiple BCC email Id  
+                }
             }
             SmtpClient smtp = new SmtpClient();  // creating object of smptpclient  
             smtp.Host = HostAdd;              //host of emailaddress for example smtp.gmail.com etc  
 
             //network and security related credentials  
 
-            smtp.EnableSsl = false;
+            smtp.EnableSsl = true;
             NetworkCredential NetworkCred = new NetworkCredential();
             NetworkCred.UserName = mailMessage.From.Address;
             NetworkCred.Password = Pass;
