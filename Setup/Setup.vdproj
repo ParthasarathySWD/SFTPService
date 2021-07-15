@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_00BD123ED9594B36B1D5BFA101ADA4C7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_01B2DC65BE51B34C15E71A6315D0A07D"
         "OwnerKey" = "8:_8FDDB77C6C134CD39FFDFEEC02012B47"
         "MsmSig" = "8:_UNDEFINED"
@@ -171,6 +177,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8D43B63009D94DD9B65C385F2E67B3D6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8FDDB77C6C134CD39FFDFEEC02012B47"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -239,12 +251,6 @@
         {
         "MsmKey" = "8:_B6680A7C7FFA80143CAE02BC91A74A17"
         "OwnerKey" = "8:_8FDDB77C6C134CD39FFDFEEC02012B47"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B8D0164CA23A4737950857C1AD894D97"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -914,6 +920,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00BD123ED9594B36B1D5BFA101ADA4C7"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\OneDrive\\Desktop\\file-transfer-featured.png"
+            "TargetName" = "8:file-transfer-featured.png"
+            "Tag" = "8:"
+            "Folder" = "8:_4D58C959BF88491FB013732F5300E282"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_01B2DC65BE51B34C15E71A6315D0A07D"
             {
             "AssemblyRegister" = "3:1"
@@ -1720,6 +1746,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D43B63009D94DD9B65C385F2E67B3D6"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\OneDrive\\Desktop\\file-transfer-featured.ico"
+            "TargetName" = "8:file-transfer-featured.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_4D58C959BF88491FB013732F5300E282"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_90C36A1D93002367FA0E7F8A94C95544"
             {
             "AssemblyRegister" = "3:1"
@@ -2059,26 +2105,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B8D0164CA23A4737950857C1AD894D97"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Pictures\\file-transfer-featured.ico"
-            "TargetName" = "8:file-transfer-featured.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_4D58C959BF88491FB013732F5300E282"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BD247107D2DDA3BB326123FC67C9EC62"
@@ -2835,7 +2861,7 @@
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
@@ -2880,9 +2906,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Avanze Direct2Title Transfer Desk"
+        "ProductName" = "8:STACX File IO"
         "ProductCode" = "8:{E0DBBCF7-93C6-46BF-B84D-4FF02F4E13BC}"
-        "PackageCode" = "8:{9C2490A3-A339-4F0C-AF46-A57210E1DD06}"
+        "PackageCode" = "8:{7F5364EE-53CB-4810-9CA4-5248CEC8F92A}"
         "UpgradeCode" = "8:{8DF64EC5-B00F-485B-9095-B4C5ABC56E61}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2893,13 +2919,13 @@
         "Manufacturer" = "8:Avanze"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Avanze Direct2Title Transfer Desk"
+        "Title" = "8:STACX File IO"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Parthasarathy"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:https://www.avanzegroup.com"
-        "ARPPRODUCTICON" = "8:_B8D0164CA23A4737950857C1AD894D97"
+        "ARPPRODUCTICON" = "8:_8D43B63009D94DD9B65C385F2E67B3D6"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -3002,6 +3028,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9015928FB5744437A8BCF59D1AFAB586"
+            {
+            "Name" = "8:Avanze File Transfer Service"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_4D58C959BF88491FB013732F5300E282"
+            "Folder" = "8:_4D58C959BF88491FB013732F5300E282"
+            "WorkingFolder" = "8:_4D58C959BF88491FB013732F5300E282"
+            "Icon" = "8:_8D43B63009D94DD9B65C385F2E67B3D6"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -3403,7 +3443,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8FDDB77C6C134CD39FFDFEEC02012B47"
             {
-            "SourcePath" = "8:..\\SFTPService\\obj\\Debug\\SFTPService.exe"
+            "SourcePath" = "8:..\\SFTPService\\obj\\Release\\SFTPService.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4D58C959BF88491FB013732F5300E282"

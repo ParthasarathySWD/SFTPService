@@ -76,9 +76,9 @@ namespace SFTPService
 
         }
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private async void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            StartExecution();
+            await StartExecution();
         }
 
         private void StopTimer()
@@ -129,7 +129,7 @@ namespace SFTPService
 
         }
 
-        private void StartExecution()
+        private async Task StartExecution()
         {
             string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssFFF");
 
@@ -146,7 +146,7 @@ namespace SFTPService
                 {
                     string filename = Path.GetFileName(file);
                     WriteLog("File Upload Started for " + filename);
-                    bool response = UploadFile(file, filename);
+                    bool response = await UploadFile(file, filename);
                     if(response)
                     {
                         if (File.Exists(file))
@@ -217,98 +217,98 @@ namespace SFTPService
         //    }
         //}
 
-        private bool UploadFile(string filePath, string destFileName)
+        private async Task<bool> UploadFile(string filePath, string destFileName)
         {
             var uploaded = false;
             try
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-
-                var httpClient = new HttpClient();
-                var fileStream = File.Open(filePath, FileMode.Open);
-                var fileInfo = new FileInfo(filePath);
-                var content = new MultipartFormDataContent();
-                content.Headers.Add("filePath", filePath);
-                content.Add(new StreamContent(fileStream), "\"image[]\"", string.Format("\"{0}\"", destFileName));
-
-                var task = httpClient.PostAsync(ActionURL, content).ContinueWith(t =>
+                using (var httpClient = new HttpClient())
                 {
-                    if (t.Status == TaskStatus.RanToCompletion)
-                    {
-                        var response = t.Result;
-                        var jsonStringTask2 = response.Content.ReadAsStringAsync().ContinueWith(jsonStringResponse2 =>
 
+                    httpClient.Timeout = TimeSpan.FromMinutes(30);
+
+                    var fileStream = File.Open(filePath, FileMode.Open);
+                    var fileInfo = new FileInfo(filePath);
+                    var content = new MultipartFormDataContent();
+                    content.Headers.Add("filePath", filePath);
+                    content.Add(new StreamContent(fileStream), "\"image[]\"", string.Format("\"{0}\"", destFileName));
+
+                    var t = await httpClient.PostAsync(ActionURL, content);
+                    string jsonString = await t.Content.ReadAsStringAsync();
+
+                    if (jsonString != "")
                         {
 
-                            string jsonString = Convert.ToString(jsonStringResponse2.Result.ToString());
-
-                            // extract security token from results:
-                            //dynamic securityTokenJSONObject = Newtonsoft.Json.Linq.JObject.Parse(jsonString);
-                            //string securityToken = securityTokenJSONObject.access_token;
-                            string logcontent = "";
-                            if (jsonString == "Success")
-                            {
-                                uploaded = true;
-                                logcontent = destFileName + " \\t Success \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                            }
-                            else if(jsonString == "Failed")
-                            {
-                                uploaded = false;
-                                logcontent = destFileName + " \\t Upload Failed \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                            }
-                            else if (jsonString == "Order Not Found")
-                            {
-                                uploaded = false;
-                                logcontent = destFileName + " \\t Order Not Found \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                            }
-                            else if (jsonString == "File Size Exceeds Limit")
-                            {
-                                logcontent = destFileName + " \\t File Size Exceeds Limit \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                                uploaded = false;
-                            }
-                            else if(jsonString == "TokenID Not Valid")
-                            {
-                                logcontent = destFileName + " \\t TokenID Not Valid \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                                uploaded = false;
-                            }
-                            else
-                            {
-                                uploaded = false;
-                                logcontent = destFileName + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                            }
-                            string sub = "Avanze Direct2Title Transfer Desk - " + destFileName + " - Transfer Status Failed";
-                            string msg = logcontent;
+                                // extract security token from results:
+                                //dynamic securityTokenJSONObject = Newtonsoft.Json.Linq.JObject.Parse(jsonString);
+                                //string securityToken = securityTokenJSONObject.access_token;
+                                string logcontent = "";
+                                if (jsonString == "Success")
+                                {
+                                    uploaded = true;
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t Success \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                }
+                                else if(jsonString == "Failed")
+                                {
+                                    uploaded = false;
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t Upload Failed \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                }
+                                else if (jsonString == "Order Not Found")
+                                {
+                                    uploaded = false;
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t Order Not Found \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                }
+                                else if (jsonString == "File Size Exceeds Limit")
+                                {
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t File Size Exceeds Limit \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                    uploaded = false;
+                                }
+                                else if(jsonString == "TokenID Not Valid")
+                                {
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t TokenID Not Valid \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                    uploaded = false;
+                                }
+                                else
+                                {
+                                    uploaded = false;
+                                    logcontent = destFileName + " \\t " + t.StatusCode + " \\t " + jsonString + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                                }
+                                string sub = "STACX File IO - " + destFileName + " - Transfer Status Failed";
+                                string msg = logcontent;
                             
-                            WriteLog(logcontent);
-                            if(jsonString != "Success")
-                            {
-                                SendEmail(sub, msg);
-                            }
-                        });
+                                WriteLog(logcontent);
+                                if(jsonString != "Success")
+                                {
+                                    //SendEmail(sub, msg);
+                                }
+                        }
+                        else
+                        {
+                            uploaded = false;
+                            string logcont = destFileName + " \\t " + jsonString + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
+                            WriteLog(logcont);
+                            //string sub = "STACX File IO - " + destFileName + " - Transfer Status Failed";
+                            //string msg = logcont;
+                            //SendEmail(sub, msg);
+                        }
 
-                        jsonStringTask2.Wait();
-                    }
-                    else
-                    {
-                        uploaded = false;
-                        string logcont = destFileName + " \\t Server Error \\t" + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss");
-                        WriteLog(logcont);
-                        string sub = "Avanze Direct2Title Transfer Desk - " + destFileName + " - Transfer Status Failed";
-                        string msg = logcont;
-                        SendEmail(sub, msg);
-                    }
+                        fileStream.Dispose();
+                }
 
-                    fileStream.Dispose();
-                });
-
-                task.Wait();
-                httpClient.Dispose();
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
+                var e = ex;
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+                string logcont = e.Message;
+                WriteLog(logcont);
+
                 uploaded = false;
+                
                 throw ex;
             }
 
